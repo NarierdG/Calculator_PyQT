@@ -192,13 +192,12 @@ class Ui_MainWindow(object):
     def actions_with_the_calculator(self, number):
         if len(self.label.text()) < 20 or (len(self.label.text()) == 20 and number == "="):
             if (len(self.label.text()) == 18 and number in {"1", "2", "3", "4", "5", "6", "7", "8", "9"}):
-                if self.label.text()[-1] in {"/", "*", "-", "+"} and (
-                        number in {"1", "2", "3", "4", "5", "6", "7", "8", "9"}):
+                if self.label.text()[-1] in {"/", "*", "-", "+"} and (number in {"1", "2", "3", "4", "5", "6", "7", "8", "9"}):
                     self.label.setText(self.label.text() + number)
                 elif self.label.text()[-1] in {"1", "2", "3", "4", "5", "6", "7", "8", "9"}:
                     self.label.setText(self.label.text() + number)
             elif (len(self.label.text()) < 18):
-                if self.label.text() in {"0", "/", "*"} or self.is_equel:
+                if self.label.text() in {"0", "/", "*", "+"} or self.is_equel:
                     self.label.setText(number)
                     self.is_equel = False
                 else:
@@ -208,16 +207,17 @@ class Ui_MainWindow(object):
                         self.label.setText(self.label.text() + number)
 
     def result(self):
-        if any(op in self.label.text() for op in {"/", "+", "-", "*"}):
+        if len(self.label.text()) == 1 and self.label.text() in {"/", "*", "-", "+"}:
+            res = 0
+        elif any(op in self.label.text() for op in {"/", "+", "-", "*"}):
             res = eval(self.label.text())
             if isinstance(res, float) and res.is_integer():
                 res = int(res)
         else:
-            res = 0
+            res = int(self.label.text())
         self.label.setText("Res: " + str(round(res, 3)))
         self.is_equel = True
 
-# 27
 
 if __name__ == "__main__":
     import sys
