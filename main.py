@@ -211,7 +211,9 @@ class Ui_MainWindow(object):
             if len(self.label.text()) == 1 and self.label.text() in {"/", "*", "-", "+"}:
                 res = 0
             elif any(op in self.label.text() for op in {"/", "+", "-", "*"}):
-                res = eval(self.label.text())
+                if self.label.text()[-1] in {"/", "+", "-", "*"}:
+                    res = eval(self.label.text()[:-1])
+                else: res = eval(self.label.text())
                 if isinstance(res, float) and res.is_integer():
                     res = int(res)
             else:
